@@ -1,5 +1,10 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request;
 
+from functions.getWorkers import getWorkers;
+from functions.getWorkersByTitle import getWorkersByTitle;
+from functions.getWorkersByOffice import getWorkersByOffice;
+from functions.getWorkersByName import getWorkersByName;
+from functions.getWorkersById import getWorkersById;
 
 app = Flask(__name__)
 
@@ -30,47 +35,26 @@ workers = [
     }  
 ]
 
-#GET all workers
 @app.route('/work')
-def getWorkers():
-    return jsonify(workers);
+def get_all_workers(): return getWorkers(workers);
 
-#GET worker by title
 @app.route('/work/title/<title>', methods=["GET"])
-def getWorkersByTitle(title):
-    self = "title";
-    matchedWorkers = [worker for worker in workers if worker.get('title') == title]
-    if not matchedWorkers:
-        return errorFunc(self);
-    return jsonify(matchedWorkers);
+def get_workers_by_title(title): 
+    return getWorkersByTitle(title, workers);
 
-#GET worker by office
 @app.route('/work/office/<office>', methods=["GET"])
-def getWorkersByOffice(office):
-    self = "office";
-    matchedWorkers = [worker for worker in workers if worker.get('office') == office]
-    if not matchedWorkers:
-        return errorFunc(self);
-    return jsonify(matchedWorkers);
-    
+def get_workers_by_office(office):
+    return getWorkersByOffice(office, workers);
 
-#GET worker by name
 @app.route('/work/name/<name>', methods=["GET"])
-def getWorkersByName(name):
-    self= "name";
-    matchedWorkers = [worker for worker in workers if worker.get('name') == name]
-    if not matchedWorkers:
-        return errorFunc(self);
-    return jsonify(matchedWorkers);
-    
+def get_workers_by_name(name):
+    return getWorkersByName(name, workers);
 
-#GET worker by id
 @app.route('/work/id/<int:id>', methods=["GET"])
-def getWorkersById(id):
-    for worker in workers:
-        if worker.get('id') == id:
-           return jsonify(worker);
-    return ["Not found. Have sure that you typed the correct id"];
+def get_workers_by_id(id):
+    return getWorkersById(id, workers);
+
+app.run(port=5000, host='localhost',debug=True);
 
 # #PUT => edit a element by id
 # @app.route('/work/<int:id>', methods=["PUT"])
@@ -79,9 +63,3 @@ def getWorkersById(id):
 #     for indice, worker in enumerate(workers):
 #         if worker.get('id') == id:
 #             workers[indice].update(changedWorker);
-
-def errorFunc(self):
-    mensage = [f"Not found. Have sure that you typed the correct {self} and used the route '/work/{self}/<{self}>'"]
-    return mensage
-
-app.run(port=5000, host='localhost',debug=True);
