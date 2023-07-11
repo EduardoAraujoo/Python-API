@@ -38,22 +38,31 @@ def getWorkers():
 #GET worker by title
 @app.route('/work/title/<title>', methods=["GET"])
 def getWorkersByTitle(title):
+    self = "title";
     matchedWorkers = [worker for worker in workers if worker.get('title') == title]
+    if not matchedWorkers:
+        return errorFunc(self);
     return jsonify(matchedWorkers);
 
 #GET worker by office
 @app.route('/work/office/<office>', methods=["GET"])
 def getWorkersByOffice(office):
+    self = "office";
     matchedWorkers = [worker for worker in workers if worker.get('office') == office]
+    if not matchedWorkers:
+        return errorFunc(self);
     return jsonify(matchedWorkers);
-    return 'Certifique-se de que digitou o correto e utilizou da rota "/work/name/<name>"'
+    
 
 #GET worker by name
 @app.route('/work/name/<name>', methods=["GET"])
 def getWorkersByName(name):
+    self= "name";
     matchedWorkers = [worker for worker in workers if worker.get('name') == name]
+    if not matchedWorkers:
+        return errorFunc(self);
     return jsonify(matchedWorkers);
-    return 'Certifique-se de que digitou o Nome correto e utilizou da rota "/work/name/<name>"'
+    
 
 #GET worker by id
 @app.route('/work/id/<int:id>', methods=["GET"])
@@ -61,6 +70,7 @@ def getWorkersById(id):
     for worker in workers:
         if worker.get('id') == id:
            return jsonify(worker);
+    return ["Not found. Have sure that you typed the correct id"];
 
 # #PUT => edit a element by id
 # @app.route('/work/<int:id>', methods=["PUT"])
@@ -70,5 +80,8 @@ def getWorkersById(id):
 #         if worker.get('id') == id:
 #             workers[indice].update(changedWorker);
 
+def errorFunc(self):
+    mensage = [f"Not found. Have sure that you typed the correct {self} and used the route '/work/{self}/<{self}>'"]
+    return mensage
 
 app.run(port=5000, host='localhost',debug=True);
