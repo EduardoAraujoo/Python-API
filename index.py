@@ -54,12 +54,18 @@ def get_workers_by_name(name):
 def get_workers_by_id(id):
     return getWorkersById(id, workers);
 
-app.run(port=5000, host='localhost',debug=True);
+#PUT => edit a element by id
+@app.route('/work/id/<int:id>', methods=["PUT"])
+def editById(id):
+    changedWorker = request.get_json()
+    for indice, worker in enumerate(workers):
+        if worker.get('id') == id:
+            workers[indice].update(changedWorker);
+            return jsonify(workers[indice]);
+        
 
-# #PUT => edit a element by id
-# @app.route('/work/<int:id>', methods=["PUT"])
-# def editById(id):
-#     changedWorker = request.get_json()
-#     for indice, worker in enumerate(workers):
-#         if worker.get('id') == id:
-#             workers[indice].update(changedWorker);
+@app.route('/work/id/<int:id>', methods=["POST"])
+def createWorker():
+    
+    
+app.run(port=5000, host='localhost',debug=True);
