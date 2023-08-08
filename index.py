@@ -1,3 +1,14 @@
+import mysql.connector
+
+conection = mysql.connector.connect(
+    host='localhost',
+    user='root',
+    password='Dudu1420!',
+    database='workerapi',
+)
+
+cursor = conection.cursor()
+
 from flask import Flask, jsonify, request;
 
 from functions.getWorkers import getWorkers;
@@ -5,6 +16,10 @@ from functions.getWorkersByTitle import getWorkersByTitle;
 from functions.getWorkersByOffice import getWorkersByOffice;
 from functions.getWorkersByName import getWorkersByName;
 from functions.getWorkersById import getWorkersById;
+
+from functions.editWorkerById import editById;
+from functions.deleteWorker import deleteWorker;
+from functions.createWorker import createWorker;
 
 app = Flask(__name__)
 
@@ -54,18 +69,21 @@ def get_workers_by_name(name):
 def get_workers_by_id(id):
     return getWorkersById(id, workers);
 
-#PUT => edit a element by id
 @app.route('/work/id/<int:id>', methods=["PUT"])
-def editById(id):
-    changedWorker = request.get_json()
-    for indice, worker in enumerate(workers):
-        if worker.get('id') == id:
-            workers[indice].update(changedWorker);
-            return jsonify(workers[indice]);
-        
+def edit_workers_by_id(id):
+    return editById(id, workers)
 
-@app.route('/work/id/<int:id>', methods=["POST"])
-def createWorker():
+@app.route('/work', methods=["POST"])
+def create_worker():
+    return createWorker(workers);
+
+
+@app.route('/work/id/<int:id>', methods=["DELETE"])
+def delete_workers(id):
+    return deleteWorker(id, workers);
+
     
     
 app.run(port=5000, host='localhost',debug=True);
+cursor.close()
+conection.close()
