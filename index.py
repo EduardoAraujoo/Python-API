@@ -1,89 +1,85 @@
 import mysql.connector
+from flask import Flask, jsonify, request;
 
-conection = mysql.connector.connect(
+
+connection = mysql.connector.connect(
     host='localhost',
     user='root',
     password='Dudu1420!',
-    database='workerapi',
+    database='dbwork',
+    port='3306'
 )
 
-cursor = conection.cursor()
 
-from flask import Flask, jsonify, request;
 
-from functions.getWorkers import getWorkers;
-from functions.getWorkersByTitle import getWorkersByTitle;
-from functions.getWorkersByOffice import getWorkersByOffice;
-from functions.getWorkersByName import getWorkersByName;
-from functions.getWorkersById import getWorkersById;
+from functions.GET.getWorkers import getWorkers;
+from functions.GET.getWorkersByTitle import getWorkersByTitle;
+from functions.GET.getWorkersByOffice import getWorkersByOffice;
+from functions.GET.getWorkersByName import getWorkersByName;
+from functions.GET.getWorkersById import getWorkersById;
 
-from functions.editWorkerById import editById;
-from functions.deleteWorker import deleteWorker;
-from functions.createWorker import createWorker;
+from functions.PUT.editWorkerById import editById;
+from functions.DELETE.deleteWorker import deleteWorker;
+from functions.CREATE.createWorker import createWorker;
 
 app = Flask(__name__)
 
-workers = [
-    {
-        'id': 1,
-        'name': 'Eduardo Araujo',
-        'office': 'Desenvolvedor Fullstack',
-        'title': 'Junior'
-    },
-    {
-        'id': 2,
-        'name': 'Eduardo Araujo',
-        'office': 'Designer',
-        'title': 'Senior'
-    },
-    {
-        'id': 3,
-        'name': 'Pedro Santos',
-        'office': 'Desenvolvedor Back-End',
-        'title': 'Pleno'
-    },
-    {
-        'id': 4,
-        'name': 'Mariana Costa',
-        'office': 'Desenvolvedor Front-End',
-        'title': 'Junior'
-    }  
-]
+# workers = [
+#     {
+#         'id': 1,
+#         'name': 'Eduardo Araujo',
+#         'office': 'Desenvolvedor Fullstack',
+#         'title': 'Junior'
+#     },
+#     {
+#         'id': 2,
+#         'name': 'Eduardo Araujo',
+#         'office': 'Designer',
+#         'title': 'Senior'
+#     },
+#     {
+#         'id': 3,
+#         'name': 'Pedro Santos',
+#         'office': 'Desenvolvedor Back-End',
+#         'title': 'Pleno'
+#     },
+#     {
+#         'id': 4,
+#         'name': 'Mariana Costa',
+#         'office': 'Desenvolvedor Front-End',
+#         'title': 'Junior'
+#     }  
+# ]
 
 @app.route('/work')
-def get_all_workers(): return getWorkers(workers);
+def get_all_workers(): return getWorkers(connection);
 
 @app.route('/work/title/<title>', methods=["GET"])
 def get_workers_by_title(title): 
-    return getWorkersByTitle(title, workers);
+    return getWorkersByTitle(title, connection);
 
-@app.route('/work/office/<office>', methods=["GET"])
-def get_workers_by_office(office):
-    return getWorkersByOffice(office, workers);
+# @app.route('/work/office/<office>', methods=["GET"])
+# def get_workers_by_office(office):
+#     return getWorkersByOffice(office, workers);
 
-@app.route('/work/name/<name>', methods=["GET"])
-def get_workers_by_name(name):
-    return getWorkersByName(name, workers);
+# @app.route('/work/name/<name>', methods=["GET"])
+# def get_workers_by_name(name):
+#     return getWorkersByName(name, workers);
 
-@app.route('/work/id/<int:id>', methods=["GET"])
-def get_workers_by_id(id):
-    return getWorkersById(id, workers);
+# @app.route('/work/id/<int:id>', methods=["GET"])
+# def get_workers_by_id(id):
+#     return getWorkersById(id, workers);
 
 @app.route('/work/id/<int:id>', methods=["PUT"])
 def edit_workers_by_id(id):
-    return editById(id, workers)
+    return editById(id);
 
 @app.route('/work', methods=["POST"])
 def create_worker():
-    return createWorker(workers);
-
+    return createWorker(connection);
 
 @app.route('/work/id/<int:id>', methods=["DELETE"])
 def delete_workers(id):
-    return deleteWorker(id, workers);
+    return deleteWorker(id);
 
-    
-    
-app.run(port=5000, host='localhost',debug=True);
-cursor.close()
-conection.close()
+app.run(port=5000, host='localhost',debug=True)
