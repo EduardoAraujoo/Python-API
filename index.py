@@ -52,7 +52,7 @@ def create_worker():
     return createWorker(connection);
 
 @app.route('/work/id/<int:id>', methods=["DELETE"])
-def delete_workers():
-    return deleteWorker(connection);
+def delete_workers(id):
+    return deleteWorker(id, connection);
 
 app.run(port=5000, host='localhost',debug=True)
