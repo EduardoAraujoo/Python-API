@@ -24,33 +24,6 @@ from functions.CREATE.createWorker import createWorker;
 
 app = Flask(__name__)
 
-# workers = [
-#     {
-#         'id': 1,
-#         'name': 'Eduardo Araujo',
-#         'office': 'Desenvolvedor Fullstack',
-#         'title': 'Junior'
-#     },
-#     {
-#         'id': 2,
-#         'name': 'Eduardo Araujo',
-#         'office': 'Designer',
-#         'title': 'Senior'
-#     },
-#     {
-#         'id': 3,
-#         'name': 'Pedro Santos',
-#         'office': 'Desenvolvedor Back-End',
-#         'title': 'Pleno'
-#     },
-#     {
-#         'id': 4,
-#         'name': 'Mariana Costa',
-#         'office': 'Desenvolvedor Front-End',
-#         'title': 'Junior'
-#     }  
-# ]
-
 @app.route('/work')
 def get_all_workers(): return getWorkers(connection);
 
@@ -72,14 +45,14 @@ def get_workers_by_title(title):
 
 @app.route('/work/id/<int:id>', methods=["PUT"])
 def edit_workers_by_id(id):
-    return editById(id);
+    return editById(id, connection);
 
 @app.route('/work', methods=["POST"])
 def create_worker():
     return createWorker(connection);
 
 @app.route('/work/id/<int:id>', methods=["DELETE"])
-def delete_workers(id):
-    return deleteWorker(id);
+def delete_workers():
+    return deleteWorker(connection);
 
 app.run(port=5000, host='localhost',debug=True)

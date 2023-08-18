@@ -1,9 +1,12 @@
-from flask import Flask, jsonify, request
+from flask import Flask, make_response, jsonify, request
 
-def editById(id, workers):
+def editById(id, connection):
     changedWorker = request.get_json()
-    for indice, worker in enumerate(workers):
-        if worker.get('id') == id:
-            workers[indice].update(changedWorker);
-            
-            return jsonify(workers[indice]);
+    
+    cursor = connection.cursor()
+    sql = "UPDATE worktable SET name=%s, office=%s, title=%s WHERE id=%s"
+    cursor.execute(sql, (changedWorker['name'], changedWorker['office'], changedWorker['title'], id))
+    connection.commit();
+    cursor.close();
+       
+    return make_response(jsonify(changedWorker))
