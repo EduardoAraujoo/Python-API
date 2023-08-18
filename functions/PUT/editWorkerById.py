@@ -1,4 +1,4 @@
-from flask import Flask, make_response, jsonify, request
+from flask import make_response, jsonify, request
 
 def editById(id, connection):
     changedWorker = request.get_json()

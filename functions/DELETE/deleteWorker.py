@@ -1,4 +1,4 @@
-from flask import Flask, make_response, jsonify, request
+from flask import make_response, jsonify
 
 def deleteWorker(id, connection):
     
@@ -9,7 +9,5 @@ def deleteWorker(id, connection):
     cursor.close();
 
     return make_response(jsonify(f"the worker with id number: {id} was deleted"))
-    # for indice, worker in enumerate(workers):
-    #     if worker.get('id') == id:
-    #         del workers[indice]
+
         

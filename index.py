@@ -10,13 +10,11 @@ connection = mysql.connector.connect(
     port='3306'
 )
 
-
-
 from functions.GET.getWorkers import getWorkers;
-from functions.GET.getWorkersByTitle import getWorkersByTitle;
-from functions.GET.getWorkersByOffice import getWorkersByOffice;
-from functions.GET.getWorkersByName import getWorkersByName;
-from functions.GET.getWorkersById import getWorkersById;
+from functions.GET.getWorkers import getWorkersByTitle;
+from functions.GET.getWorkers import getWorkersByOffice;
+from functions.GET.getWorkers import getWorkersByName;
+from functions.GET.getWorkers import getWorkersById;
 
 from functions.PUT.editWorkerById import editById;
 from functions.DELETE.deleteWorker import deleteWorker;
@@ -31,17 +29,17 @@ def get_all_workers(): return getWorkers(connection);
 def get_workers_by_title(title): 
     return getWorkersByTitle(title, connection);
 
-# @app.route('/work/office/<office>', methods=["GET"])
-# def get_workers_by_office(office):
-#     return getWorkersByOffice(office, workers);
+@app.route('/work/office/<office>', methods=["GET"])
+def get_workers_by_office(office):
+    return getWorkersByOffice(office, connection);
 
-# @app.route('/work/name/<name>', methods=["GET"])
-# def get_workers_by_name(name):
-#     return getWorkersByName(name, workers);
+@app.route('/work/name/<name>', methods=["GET"])
+def get_workers_by_name(name):
+    return getWorkersByName(name, connection);
 
-# @app.route('/work/id/<int:id>', methods=["GET"])
-# def get_workers_by_id(id):
-#     return getWorkersById(id, workers);
+@app.route('/work/id/<int:id>', methods=["GET"])
+def get_workers_by_id(id):
+    return getWorkersById(id, connection);
 
 @app.route('/work/id/<int:id>', methods=["PUT"])
 def edit_workers_by_id(id):
