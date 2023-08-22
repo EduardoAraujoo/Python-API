@@ -1,5 +1,9 @@
 import mysql.connector
 from flask import Flask, jsonify, request
+from functions.GET import getWorkers;
+from functions.PUT.editWorkerById import editById;
+from functions.DELETE.deleteWorker import deleteWorker;
+from functions.CREATE.createWorker import createWorker;
 
 connection = mysql.connector.connect(
     host='localhost',
@@ -8,11 +12,6 @@ connection = mysql.connector.connect(
     database='dbwork',
     port='3306'
 )
-
-from functions.GET import getWorkers;
-from functions.PUT.editWorkerById import editById;
-from functions.DELETE.deleteWorker import deleteWorker;
-from functions.CREATE.createWorker import createWorker;
 
 app = Flask(__name__)
 
