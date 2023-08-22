@@ -1,7 +1,6 @@
 import mysql.connector
 from flask import Flask, jsonify, request;
 
-
 connection = mysql.connector.connect(
     host='localhost',
     user='root',
