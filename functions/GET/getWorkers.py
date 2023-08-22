@@ -57,7 +57,7 @@ def getWorkersByName(name, connection):
 
     for resultado in dados_do_banco:
         same = difflib.SequenceMatcher(None, name, resultado[1]).ratio()
-        if same >= 0.6:
+        if same >= 0.2:
             resultado_com_similaridade = getWorkersFunction(dados_do_banco);
             similarityResults.append(resultado_com_similaridade);
 
@@ -65,9 +65,19 @@ def getWorkersByName(name, connection):
     return make_response(jsonify(similarityResults))
 
 def getWorkersByOffice(office, connection):
-    cursor = connection.cursor();
-    sql = ('SELECT * FROM worktable WHERE office=%s')
-    cursor.execute(sql, (office,));
-    workers = getWorkersFunction(cursor);
-    cursor.close();
-    return make_response(jsonify(workers));
+    cursor = connection.cursor()
+
+    sql = "SELECT * FROM worktable WHERE office LIKE %s"
+    cursor.execute(sql, (office + "%",))
+    
+    dados_do_banco = cursor.fetchall()
+    similarityResults = []
+
+    for resultado in dados_do_banco:
+        same = difflib.SequenceMatcher(None, office, resultado[1]).ratio()
+        if same >= 0.3:
+            resultado_com_similaridade = getWorkersFunction(dados_do_banco);
+            similarityResults.append(resultado_com_similaridade);
+
+    cursor.close()
+    return make_response(jsonify(similarityResults))
